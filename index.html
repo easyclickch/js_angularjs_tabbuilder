@@ -8,12 +8,34 @@
 		<script type="text/javascript" src="./js/bootstrap-3.0.2/bootstrap.js"></script>
 		<script type="text/javascript" src="./js/angular-1.2.0/angular.js"></script>
 		<script type="text/javascript" src="./js/components.js"></script>
-		<script type="text/ng-template" id="tabbable.html" src="./tabbable.html"></script>
+		<script type="text/javascript" src="./js/tabsmodule.js"></script>
+		<script type="text/javascript" src="./js/panesmodule.js"></script>
 	</head>
 	<body>
-		
-		<div id="tabs" ng-controller="tabCtrl">
-			<div id="newTabModal" class="modal fade" role="dialog">
+	
+	
+		<div id="tabs" ng-controller="tabcontroller">
+			<modal id="newTabModal">
+				<form ng-submit="addTab()">
+					<div class="modal-body">
+						<div ng-show="error" class="alert alert-danger">Missing required field.</div>
+						<div id="tabNameGroup" class="input-group">
+							<span class="input-group-addon">Name</span>
+							<input id="txtTabName" type="text" ng-model="name" placeholder="Enter a name here" class="form-control">
+						</div>
+						<br/>
+						<div class="input-group">
+							<textarea id="txtTabContent" rows="6" cols="90" ng-model="content" class="form-control" placeholder="Enter text content here" style="resize:none"></textarea>
+						</div>
+						{{name}}
+					</div>
+					<div class="modal-footer">
+						<button class="btn" data-dismiss="modal" ng-click="clearForm()" aria-hidden="true">Cancel</button>
+						<button class="btn btn-primary">Submit</button>
+					</div>
+				</form>
+			</modal>
+			<!-- div id="newTabModal" class="modal fade" role="dialog">
 				<div class="modal-dialog">
 					<div class="modal-content">
 						<div class="modal-header">
@@ -21,6 +43,7 @@
 							<h3 id="myModalHeader" class="modal-title">Add New Tab</h3>
 						</div>
 						<form ng-submit="addTab()">
+							<div>
 							<div class="modal-body">
 								<div ng-show="error" class="alert alert-danger">Missing required field.</div>
 								<div id="tabNameGroup" class="input-group">
@@ -36,12 +59,13 @@
 								<button class="btn" data-dismiss="modal" ng-click="clearForm()" aria-hidden="true">Cancel</button>
 								<button class="btn btn-primary">Submit</button>
 							</div>
+							</div>
 						</form>
 					</div>
 				</div>
-			</div>
+			</div -->
 			<tabs>
-				<pane ng-repeat="tab in tabsCollection" title="{{tab.name}}">
+				<pane ng-repeat="tab in tabs" title="{{tab.name}}" createts="{{tab.createts}}">
 					<div class="display well well-lg">
 						<p>{{tab.content}}</p>
 					</div>
@@ -49,9 +73,9 @@
 						<div class="panel-body">
 							<textarea rows="6" cols="80" ng-model="tab.content" placeholder="Enter text content here" disabled="disabled" style="resize:none">{{tab.content}}</textarea>
 						</div>
-						<div class="panel-footer" ng-controller="paneCtrl">
-							<!-- button ng-click="deletePane(tab)" class="btn btn-primary">Delete</button -->
-							<button ng-click="saveEdit()" class="btn btn-primary">Save</button>
+						<div class="panel-footer">
+							<!-- button ng-click="deleteTab(tab)" class="btn btn-primary btn-delete">Delete</button -->
+							<button ng-click="saveEdit(tab)" class="btn btn-primary">Save</button>
 						</div>
 					</div>
 				</pane>
